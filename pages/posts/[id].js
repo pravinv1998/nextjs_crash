@@ -1,7 +1,4 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import Routes from "./routes";
+import { useRouter } from "next/router";
 
 const posts = [
   {
@@ -67,29 +64,35 @@ const posts = [
   },
 ];
 
-export default function Home() {
+function getPostDataById(id) {
+  for (let i = 0; i < posts.length; i++) {
+    if (posts[i].id === parseInt(id)) {
+      return posts[i];
+    }
+  }
+}
+
+const PostDetails = ({ id }) => {
+  const router = useRouter();
+  const data = router.query.id;
+  //   const post = posts.filter((vl) => vl.id === data);
+
+  const postData = getPostDataById(id);
+  //   const postData = getPostDataById(data);
+  console.log(postData);
   return (
-    <div className={styles.container}>
-      <Head>
-        {" "}
-        <title> Home Page </title>{" "}
-      </Head>
-      <h1>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum,
-        explicabo quisquam doloribus similique nesciunt commodi! Molestiae,
-        rerum iure repellendus quod veritatis quae tenetur, amet beatae
-        accusantium delectus ipsum ipsam omnis?
-      </h1>
-
-      <Routes />
-
-      <Image
-        src="/images/world.jpg"
-        alt="test image"
-        height={1100}
-        width={1100}
-      />
-      <hr />
+    <div>
+      <h1>data props- {data} </h1>
+      {/* <h1>Id: {post.id} </h1> */}
+      <h1>Title: {postData.title} </h1>
+      <h2>Body: {postData.body} </h2>
     </div>
   );
-}
+};
+
+export default PostDetails;
+
+PostDetails.getInitialProps = async ({ query }) => {
+  const { id } = query;
+  return { id };
+};
