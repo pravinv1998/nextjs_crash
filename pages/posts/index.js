@@ -35,8 +35,11 @@ const index = ({ data }) => {
 export default index;
 
 export async function getStaticProps() {
-  const posts = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const posts = await fetch(
+    `${process.env.API_BASE_URL}${process.env.POST_URL}`
+  );
   const data = await posts.json();
+
   return {
     props: {
       data,
