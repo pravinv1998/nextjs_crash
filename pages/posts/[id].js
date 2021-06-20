@@ -73,7 +73,11 @@ import { useRouter } from "next/router";
 // }
 
 const PostDetails = ({ postData }) => {
-  // const router = useRouter();
+  const router = useRouter();
+  if (router.isFallback) {
+    return <div> Loading page data...</div>;
+  }
+
   // const data = router.query.id;
   //   const post = posts.filter((vl) => vl.id === data);
 
@@ -99,25 +103,30 @@ export default PostDetails;
 //   return { id };
 // };
 
-// export async function getStaticProps({ query, params }) {
-//   const { id } = query || params;
-//   const posts = await fetch("https://jsonplaceholder.typicode.com/posts" + id);
-//   const data = await posts.json();
-//   return {
-//     props: {
-//       data,
-//     },
-//   };
-// }
+export async function getStaticPaths() {
+  const paths = ["/posts/1", "/posts/2"];
+  return { paths, fallback: true };
+}
 
-export async function getServerSideProps({ query, params }) {
+export async function getStaticProps({ query, params }) {
   const { id } = query || params;
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts/" + id);
   const postData = await res.json();
-  console.log(postData);
   return {
     props: {
       postData,
     },
   };
 }
+
+// export async function getServerSideProps({ query, params }) {
+//   const { id } = query || params;
+//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+//   const postData = await res.json();
+//   console.log(postData);
+//   return {
+//     props: {
+//       postData,
+//     },
+//   };
+// }
