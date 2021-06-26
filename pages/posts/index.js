@@ -1,4 +1,4 @@
-limport Link from "next/link";
+import Link from "next/link";
 import styled from "@emotion/styled";
 import styles from "./Index.module.scss";
 import Image from "next/image";
@@ -18,7 +18,8 @@ const index = ({ data }) => {
             src="/images/1.png"
             alt="me"
             height="350"
-e            width="450"
+            e
+            width="450"
           />
           <Styledh3>
             <Link href={`/posts/${post.id}`}>

@@ -2,6 +2,23 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Routes from "./routes";
+import dynamic from "next/dynamic";
+import Router from "next/router";
+
+// const HeaderComp = dynamic(() => import("./main/index"));
+
+// import HeaderComp from "./main/index";
+
+const DynamicComponent = dynamic(
+  () => import("./router/index").then((mod) => mod.HeaderComp),
+  {
+    loading: () => {
+      <p>loading...</p>;
+    },
+
+    ssr: false,
+  }
+);
 
 const posts = [
   {
@@ -74,6 +91,15 @@ export default function Home() {
         {" "}
         <title> Home Page </title>{" "}
       </Head>
+
+      <div className="grid">
+        <a className="card" onClick={() => Router.push("/router")}>
+          <h3>Router</h3>
+        </a>
+      </div>
+
+      {/* <HeaderComp /> */}
+      {/* <DynamicComponent /> */}
       <h1>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum,
         explicabo quisquam doloribus similique nesciunt commodi! Molestiae,
